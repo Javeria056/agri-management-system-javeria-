@@ -1,0 +1,12 @@
+const express = require("express");
+const c = require("../controllers/buyerController");
+const { protect, authorize } = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
+const r = express.Router();
+r.use(protect);
+r.get("/", c.getAll);
+r.get("/:id", c.getOne);
+r.post("/", upload.single("photo"), c.create);
+r.put("/:id", authorize("admin"), upload.single("photo"), c.update);
+r.delete("/:id", authorize("admin"), c.remove);
+module.exports = r;

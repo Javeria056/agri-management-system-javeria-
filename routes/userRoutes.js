@@ -1,0 +1,15 @@
+const express = require("express");
+const c = require("../controllers/userController");
+const { protect, authorize } = require("../middleware/authMiddleware");
+const r = express.Router();
+r.post("/register", c.register);
+r.post("/login", c.login);
+r.use(protect);
+r.get("/me", c.me);
+r.post("/logout", c.logout);
+r.get("/", c.getAllUsers);
+r.get("/:id", c.getUser);
+r.post("/", authorize("admin"), c.createUser);
+r.put("/:id", authorize("admin"), c.updateUser);
+r.delete("/:id", authorize("admin"), c.removeUser);
+module.exports = r;
